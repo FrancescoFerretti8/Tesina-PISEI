@@ -1,4 +1,4 @@
-PROJECT_NAME := r2r_dac_control
+PROJECT_NAME := Decoder
 # needs PDK_ROOT and OPENLANE_ROOT, OPENLANE_IMAGE_NAME set from your environment
 harden:
 	docker run --rm \

@@ -1,44 +1,69 @@
-Simulation of an R2R DAC with Verilator and d_cosim
+Simulation of a DECODER with Verilator and d_cosim
 
-.lib /home/matt/work/asic-workshop/shuttle-2404/pdk/sky130A/libs.tech/ngspice/sky130.lib.spice tt
+.lib /home/ttuser/pdk/sky130A/libs.tech/ngspice/sky130.lib.spice tt
 
-* https://sourceforge.net/p/ngspice/ngspice/ci/master/tree/examples/xspice/verilator/
+*https://sourceforge.net/p/ngspice/ngspice/ci/master/tree/examples/xspice/verilator/
 
 * The digital portion of the circuit is specified in compiled Verilog.
 * list the inputs and outputs
-adut [ clk n_rst ext_data d7 d6 d5 d4 d3 d2 d1 d0 load_divider ] [b7 b6 b5 b4 b3 b2 b1 b0] null dut
-.model dut d_cosim simulation="./r2r_dac_control.so"
+adut [a b] [y3 y2 y1 y0 yn3 yn2 yn1 yn0] null dut
+.model dut d_cosim simulation="./Decoder.so"
 
 * connect the driver to the R2R dac
 * had to edit spice exported by xschem to add the subckt and ends
 
-.include "../xschem/simulation/r2r.spice" 
+.include "/home/ttuser/tt06-analog-r2r-dac/xschem/simulation/Mux.spice" 
 *.include "../mag/r2r.spice" 
 
-xr2r b0 b1 b2 b3 b4 b5 b6 b7 out 0 0 r2r
+*xMux out_decoder2 out_decoder1 out_decoder0 n_out_decoder2 n_out_decoder1 n_out_decoder0 out 0 0 Mux  
+*Mux VDD VSS p0 A0 out n0 p1 A1 n1 p2 n2 p3 n3
+xMux VDD VSS yn0 A0 out y0 yn1 A1 y1 yn2 y2 yn3 y3 Mux
+
 
 * simulate tt output path
 R1 out pin_out 500
 C1 out 0 5p
+.ic V(out)=0
 
 
 
 **** End of the ADC and its subcircuits.  Begin test circuit ****
 
-.param vcc=1.8
-vcc vcc 0 {vcc}
+*.param vcc=1.8
+*vcc vcc 0 {vcc}
 
 * Digital clock signal
 
-aclock 0 clk clock
-.model clock d_osc cntl_array=[-1 1] freq_array=[1Meg 1Meg]
+*aclock 0 clk clock
+*.model clock d_osc cntl_array=[-1 1] freq_array=[1Meg 1Meg]
 
 * reset signal
 
-Vreset n_rst 0 PULSE 3 0 1n 20p 20p 1u 500u
+*DIGITALE
+*Generiamo tutti i codici 00->01->10->11
+*Vb b 0 PULSE(1.8 0 0 1n 1n 100u 200u)
+*Va a 0 PULSE(1.8 0 0 1n 1n 200u 400u)
+*Vb b 0 PULSE(1.8 0 0 1n 1n 100n 200n)
+*Va a 0 PULSE(1.8 0 0 1n 1n 200n 400n)
+
+*ANALOGICO
+VDD VDD 0 DC 0
+VSS VSS 0 DC 0 
+
+*Va a 0 DC 1.8
+*Vb b 0 DC 1.8
+
+VA0 A0 0 SIN(0 1 1Meg) 
+VA1 A1 0 SIN(0 1 1Meg) 
+*VA0 A0 0 DC 1.4
+*VA1 A1 0 DC 0.7
 
 .control
-tran 100n 400u
+*tran 1u 400u per il test logico digitale
+tran 1n 1u
+*plot  a+8 b+8 y3+6 y2+4 y1+2 y0 
+*plot  a+8 b+8 yn3+6 yn2+4 yn1+2 yn0
+ 
 plot pin_out
 .endc
 .end
