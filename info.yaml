@@ -1,17 +1,17 @@
 # Tiny Tapeout project information
-project:
-  title:        "Analog 8bit R2R DAC"      # Project title
-  author:       "Matt Venn"      # Your name
-  discord:      "mattvenn"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  "A simple 8 bit DAC with a sawtooth waveform driver"      # One line description of what your project does
-  language:     "Analog" # other examples include Verilog, Amaranth, VHDL, etc
+project:        
+  title:        "Analog Mux"      # Project title
+  author:       "Francesco Ferretti"      # Your name
+  discord:      "Tian"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
+  description:  "A simple analog Mux with passgate"      # One line description of what your project does
+  language:     "Analog and verilog" # other examples include Verilog, Amaranth, VHDL, etc
   clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
 
   # How many tiles your design occupies? A single tile is about 167x108 uM.
   tiles: "1x2"          # Valid values: 1x1 (digital only), 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
-  top_module:  "tt_um_mattvenn_r2r_dac"
+  top_module:  "tt_um_Mux"
   
   # List your project's source files here. Source files must be in ./src and you must list each source file separately, one per line:
   source_files:        
@@ -20,8 +20,8 @@ project:
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:
   # Inputs
-  ui[0]: "bit 0"
-  ui[1]: "bit 1"
+  ui[0]: "bit 0 decoder controll LSB"
+  ui[1]: "bit 1 decoder controll MSB"
   ui[2]: "bit 2"
   ui[3]: "bit 3"
   ui[4]: "bit 4"
@@ -50,7 +50,7 @@ pinout:
   uio[7]: ""
 
   # Analog pins - you can add more if you use them, up to 8
-  ua[0]: "DAC output"
+  ua[0]: "Mux output"
 
 # Do not change!
 yaml_version: 6

@@ -1,0 +1,11 @@
+magic
+tech sky130A
+magscale 1 2
+timestamp 1749914416
+<< checkpaint >>
+rect -1260 -1260 4937 12162
+use Mux  x8
+timestamp 1749914416
+transform 1 0 790 0 1 5383
+box -790 -5383 2887 5519
+<< end >>

@@ -1,0 +1,34 @@
+magic
+tech sky130A
+timestamp 1750430387
+<< metal4 >>
+rect 391 21849 591 23341
+rect 13546 22502 13576 22897
+rect 13822 22507 13852 22905
+rect 83 -53 283 603
+rect 83 -253 830 -53
+rect 630 -823 830 -253
+rect 11308 -990 11398 72
+rect 13240 -885 13330 72
+rect 15172 -905 15262 72
+use tt_um_Mux  tt_um_Mux_0
+timestamp 1750430387
+transform 1 0 -9 0 1 -18
+box -16 -16 15271 22576
+<< labels >>
+flabel space 11308 -990 11398 1058 0 FreeSans 800 0 0 0 A0
+flabel metal4 13822 22676 13852 22706 0 FreeSans 800 0 0 0 b
+port 4 nsew
+flabel metal4 13546 22704 13576 22734 0 FreeSans 800 0 0 0 a
+port 6 nsew
+flabel metal4 15172 -376 15262 -286 0 FreeSans 800 0 0 0 out
+port 8 nsew
+flabel metal4 13240 -478 13330 -388 0 FreeSans 800 0 0 0 A1
+port 10 nsew
+flabel metal4 11308 -841 11398 -751 0 FreeSans 800 0 0 0 A0
+port 12 nsew
+flabel metal4 391 23045 591 23245 0 FreeSans 800 0 0 0 VSS
+port 18 nsew
+flabel metal4 630 -657 830 -457 0 FreeSans 800 0 0 0 VDD
+port 16 nsew
+<< end >>

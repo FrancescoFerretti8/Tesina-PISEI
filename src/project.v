@@ -2,7 +2,7 @@
 
 // just a stub to keep the Tiny Tapeout tools happy
 
-module tt_um_mattvenn_r2r_dac (
+module tt_um_Mux (
     input  wire       VGND,
     input  wire       VPWR,
     input  wire [7:0] ui_in,    // Dedicated inputs
@@ -15,33 +15,40 @@ module tt_um_mattvenn_r2r_dac (
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
 );
-    wire [7:0] r2r_out;
+    wire [3:0] n_interno;
+    wire [3:0] p_interno;
 
-    r2r_dac_control r2r_dac_control(
-        .clk(clk),                  // expect a 10M clock
-        .n_rst(rst_n),
-        .ext_data(uio_in[0]),       // if this is high, then DAC data comes from ui_in[7:0]
-        .load_divider(uio_in[1]),   // load value set on data to the clock divider
-        .data(ui_in),               // connect to ui_in[7:0]
-        .r2r_out(r2r_out),          // 8 bit out to the R2R DAC
+    Decoder Decoder(
+        .b(ui_in[0]),       // if this is high, then DAC data comes from ui_in[7:0]
+        .a(ui_in[1]),   // load value set on data to the clock divider
+        .n0(n_interno[0]),
+        .n1(n_interno[1]),
+        .n2(n_interno[2]),
+        .n3(n_interno[3]),
+        .p0(p_interno[0]),
+        .p1(p_interno[1]),
+        .p2(p_interno[2]),
+        .p3(p_interno[3]),
         .VPWR(VPWR),
         .VGND(VGND)
         );
 
-    r2r r2r(
-        .b0(r2r_out[0]),
-        .b1(r2r_out[1]),
-        .b2(r2r_out[2]),
-        .b3(r2r_out[3]),
-        .b4(r2r_out[4]),
-        .b5(r2r_out[5]),
-        .b6(r2r_out[6]),
-        .b7(r2r_out[7]),
-        .out(ua[0]),
-        .VSUBS(VGND),
-        .GND(VGND)
+    Mux Mux(
+        .A0(ua[4]),
+        .A1(ua[3]),
+        .n0(n_interno[0]),
+        .n1(n_interno[1]),
+        .n2(n_interno[2]),
+        .n3(n_interno[3]),
+        .p0(p_interno[0]),
+        .p1(p_interno[1]),
+        .p2(p_interno[2]),
+        .p3(p_interno[3]),
+        .out(ua[2]),
+        .VDD(VPWR),
+        .VSS(VGND)
         );
-
+        
     // ties for the output enables
     assign uo_out[0] = VGND;
     assign uo_out[1] = VGND;
@@ -69,5 +76,5 @@ module tt_um_mattvenn_r2r_dac (
     assign uio_oe[5] = VGND;
     assign uio_oe[6] = VGND;
     assign uio_oe[7] = VGND;
-
+        
 endmodule

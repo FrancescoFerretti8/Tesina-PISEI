@@ -1,73 +1,128 @@
-** sch_path: /home/ttuser/tt10-analog-buffer/xschem/Mux_test.sch
-**.subckt Mux_test Uscita
+** sch_path: /home/ttuser/Progetto_PISEI/xschem/Mux_test.sch
+**.subckt Mux_test Uscita uscita_ac Uscita_pad
 *.opin Uscita
+*.opin uscita_ac
+*.opin Uscita_pad
 V4 VDD GND 1.8
 V5 VSS GND 0
-V7 net3 GND pwl 10n 0 10.1n 0.6 50n 0.6 50.1n 0
-C1 net1 VSS 5p m=1
-R1 Uscita net1 500 m=1
-C2 net2 VSS 5p m=1
-R2 in1 net2 500 m=1
-C3 net3 VSS 5p m=1
-R4 in2 net3 500 m=1
-x1 VDD VSS VSS in1 net1 VDD VDD in2 VSS VDD VSS VDD VSS Mux
-V1 net2 GND pwl 10n 0 10.1n 0.6 50n 0.6 50.1n 0
+x1 VDD VSS VSS input0 VDD VDD input1 VSS output VDD VSS VDD VSS Mux
+V1 in0 VSS pwl 10n 0 10.1n 1.8 200n 1.8 200.1n 0
+x4 VSS output Uscita pad_model
+x5 VDD VSS VSS input_pass output_pass VDD pass_gate
+V2 in1 VSS 0 ac 1 0 sin(0 1m 1m 0 0 0)
+V3 in_pass VSS 0.9
+Vr17 net1 input_pass 0
+.save i(vr17)
+x6 VSS in_pass net1 pad_model
+x7 VSS output_pass VSS pad_model
+x8 VDD VSS VSS input_only_pass output_only_pass VDD pass_gate
+V6 in_only_pass VSS 0.1
+Vr1 in_only_pass input_only_pass 0
+.save i(vr1)
+Vr2 output_only_pass VSS 0
+.save i(vr2)
+x9 VDD VSS VDD VSS VSS VSS ingresso_ac VDD uscita_ac VDD VSS VDD VSS Mux
+V7 ingresso_ac VSS 0 ac 1 0
+x10 VSS ingresso_ac_pad Uscita_pad pad_model
+V8 ingresso_ac_pad VSS 0 ac 1 0
+x2 VSS in0 input0 pad_model
+x3 VSS in1 input1 pad_model
 **** begin user architecture code
+
+
+
+.option reltol=1e-5
++  abstol=1e-14 savecurrents
+.control
+  save all
+  op
+  remzerovec
+write Mux_test.raw
+set appendwrite
+tran 100p 600n
+write Mux_test.raw
+set appendwrite
+ac dec 10 1 1e12
+write Mux_test.raw
+set appendwrite
+.endc
+
+
+
 
 ** opencircuitdesign pdks install
 .lib /home/ttuser/pdk/sky130A/libs.tech/ngspice/sky130.lib.spice tt
-
-
-
-
-
-.control
-tran 100p 200n
-write Mux_test.raw
-.endc
-
 
 
 **** end user architecture code
 **.ends
 
 * expanding   symbol:  Mux.sym # of pins=13
-** sym_path: /home/ttuser/tt10-analog-buffer/xschem/Mux.sym
-** sch_path: /home/ttuser/tt10-analog-buffer/xschem/Mux.sch
-.subckt Mux VDD VSS p0 A0 out n0 p1 A1 n1 p2 n2 p3 n3
-*.ipin VDD
-*.ipin VSS
-*.ipin p0
-*.ipin n0
+** sym_path: /home/ttuser/Progetto_PISEI/xschem/Mux.sym
+** sch_path: /home/ttuser/Progetto_PISEI/xschem/Mux.sch
+.subckt Mux VDD VSS p0 A0 n0 p1 A1 n1 out p2 n2 p3 n3
 *.ipin A0
-*.ipin p1
-*.ipin n1
+*.opin out
+*.ipin p0
 *.ipin A1
+*.ipin p1
+*.ipin n0
 *.ipin p2
 *.ipin n2
+*.ipin n1
 *.ipin p3
 *.ipin n3
-*.opin out
-R1 net1 VDD 800 m=1
-XM8 out p0 A0 VDD sky130_fd_pr__pfet_01v8_lvt L=0.35 W=2 nf=2 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM9 A0 n0 out VSS sky130_fd_pr__nfet_01v8_lvt L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM10 out p1 A1 VDD sky130_fd_pr__pfet_01v8_lvt L=0.35 W=2 nf=2 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM1 A1 n1 out VSS sky130_fd_pr__nfet_01v8_lvt L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM2 out p2 net2 VDD sky130_fd_pr__pfet_01v8_lvt L=0.35 W=2 nf=2 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM3 net2 n2 out VSS sky130_fd_pr__nfet_01v8_lvt L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM4 out p3 net1 VDD sky130_fd_pr__pfet_01v8_lvt L=0.35 W=2 nf=2 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-XM5 net1 n3 out VSS sky130_fd_pr__nfet_01v8_lvt L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29' pd='2*int((nf+1)/2) * (W/nf + 0.29)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
-R2 net2 VDD 400 m=1
-R3 VSS net2 800 m=1
-R4 VSS net1 400 m=1
+*.ipin VDD
+*.ipin VSS
+x1 VDD VSS p0 A0 out n0 pass_gate
+x2 VDD VSS p1 A1 out n1 pass_gate
+x3 VDD VSS p2 net1 out n2 pass_gate
+x4 VDD VSS p3 net2 out n3 pass_gate
+XR3 net1 VDD VSS sky130_fd_pr__res_high_po_0p35 L=21 mult=1 m=1
+XR1 net2 net1 VSS sky130_fd_pr__res_high_po_0p35 L=21 mult=1 m=1
+XR2 VSS net2 VSS sky130_fd_pr__res_high_po_0p35 L=21 mult=1 m=1
+.ends
+
+
+* expanding   symbol:  pad_model.sym # of pins=3
+** sym_path: /home/ttuser/Progetto_PISEI/xschem/pad_model.sym
+** sch_path: /home/ttuser/Progetto_PISEI/xschem/pad_model.sch
+.subckt pad_model VGND pin mod
+*.iopin pin
+*.iopin mod
+*.iopin VGND
+C1 pin VGND 2p m=1
+V1 VAPWR VGND 3.3
+R1 net1 pin 1 m=1
+L1 net2 net1 1n m=1
+C2 net2 VGND 3p m=1
+R2 net3 net2 50 m=1
+C3 mod VGND 250f m=1
+XM5 net3 VGND mod VAPWR sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM6 net3 VAPWR VGND VAPWR sky130_fd_pr__pfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM7 net3 VGND VGND VGND sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM8 net3 VAPWR mod VGND sky130_fd_pr__nfet_g5v0d10v5 L=0.5 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+.ends
+
+
+* expanding   symbol:  pass_gate.sym # of pins=6
+** sym_path: /home/ttuser/Progetto_PISEI/xschem/pass_gate.sym
+** sch_path: /home/ttuser/Progetto_PISEI/xschem/pass_gate.sch
+.subckt pass_gate VDD VSS pin Ain uscita nin
+*.ipin Ain
+*.ipin pin
+*.ipin nin
+*.ipin VDD
+*.ipin VSS
+*.opin uscita
+XM2 Ain nin uscita VSS sky130_fd_pr__nfet_01v8_lvt L=0.15 W=8 nf=8 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
+XM3 uscita pin Ain VDD sky130_fd_pr__pfet_01v8_lvt L=0.35 W=16 nf=16 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W' sa=0 sb=0 sd=0 mult=1 m=1
 .ends
 
 .GLOBAL GND

@@ -122,17 +122,17 @@ C {pass_gate.sym} 560 -160 0 0 {name=x4}
 C {devices/lab_wire.sym} 290 -200 0 0 {name=p11 sig_type=std_logic lab=VDD}
 C {devices/lab_wire.sym} 290 -180 0 0 {name=p16 sig_type=std_logic lab=VSS}
 C {sky130_fd_pr/res_high_po_0p35.sym} 80 -430 0 0 {name=R3
-L=15.75
+L=21
 model=res_high_po_0p35
 spiceprefix=X
 mult=1}
 C {sky130_fd_pr/res_high_po_0p35.sym} 80 -250 0 0 {name=R1
-L=15.75
+L=21
 model=res_high_po_0p35
 spiceprefix=X
 mult=1}
 C {sky130_fd_pr/res_high_po_0p35.sym} 80 -60 0 0 {name=R2
-L=15.75
+L=21
 model=res_high_po_0p35
 spiceprefix=X
 mult=1}
