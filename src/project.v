@@ -4,7 +4,7 @@
 
 module tt_um_Mux (
     input  wire       VGND,
-    input  wire       VPWR,
+    input  wire       VDPWR,
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -29,13 +29,13 @@ module tt_um_Mux (
         .p1(p_interno[1]),
         .p2(p_interno[2]),
         .p3(p_interno[3]),
-        .VPWR(VPWR),
+        .VPWR(VDPWR),
         .VGND(VGND)
         );
 
     Mux Mux(
-        .A0(ua[4]),
-        .A1(ua[3]),
+        .A0(ua[2]),
+        .A1(ua[1]),
         .n0(n_interno[0]),
         .n1(n_interno[1]),
         .n2(n_interno[2]),
@@ -44,8 +44,8 @@ module tt_um_Mux (
         .p1(p_interno[1]),
         .p2(p_interno[2]),
         .p3(p_interno[3]),
-        .out(ua[2]),
-        .VDD(VPWR),
+        .out(ua[0]),
+        .VDD(VDPWR),
         .VSS(VGND)
         );
         
@@ -76,5 +76,8 @@ module tt_um_Mux (
     assign uio_oe[5] = VGND;
     assign uio_oe[6] = VGND;
     assign uio_oe[7] = VGND;
+    
+    assign clk = VGND;
+    assign rst_n = VGND;
         
 endmodule
